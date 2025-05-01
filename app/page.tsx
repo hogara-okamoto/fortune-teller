@@ -6,7 +6,7 @@ const bloodTypes = ['A', 'B', 'O', 'AB'];
 const birthMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 const languages = ['English', 'Spanish', 'Japanese', 'Chinese'];
 
-function speak(text, langCode = 'en-US') {
+function speak(text: string, langCode = 'en-US') {
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = langCode;
