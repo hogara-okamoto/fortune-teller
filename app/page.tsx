@@ -162,23 +162,6 @@ export default function Home() {
         >
           Reveal Fortune
         </button>
-
-        <button
-          onClick={() => speak(result, getLangCode(language))}
-          style={{
-            fontWeight: 'bold',
-            padding: '0.75rem 1.5rem',
-            fontSize: '1rem',
-            borderRadius: '0.5rem',
-            border: '2px solid #3498db',
-            backgroundColor: '#3498db',
-            color: 'white',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s ease, transform 0.1s ease',
-          }}
-        >
-          🔊 Speak again
-        </button>
       </div>
 
       {/* Result Display */}
