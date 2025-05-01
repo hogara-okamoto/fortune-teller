@@ -162,7 +162,7 @@ export default function Home() {
         >
           Reveal Fortune
         </button>
-/*
+
         <button
           onClick={() => speak(result, getLangCode(language))}
           style={{
@@ -179,7 +179,7 @@ export default function Home() {
         >
           🔊 Speak again
         </button>
-*/
+
       </div>
 
       {/* Result Display */}
