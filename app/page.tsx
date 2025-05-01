@@ -19,6 +19,15 @@ function speak(text, langCode = 'en-US') {
   }
 }
 
+function getLangCode(language) {
+  switch (language) {
+    case 'Japanese': return 'ja-JP';
+    case 'Spanish': return 'es-ES';
+    case 'Chinese': return 'zh-CN';
+    default: return 'en-US';
+  }
+}
+
 export default function Home() {
   const [input1, setInput1] = useState('A');
   const [input2, setInput2] = useState('1');
@@ -40,12 +49,9 @@ export default function Home() {
     setResult(data.result);
     setLoading(false);
 
-    let langCode = 'en-US';
-    if (language === 'Japanese') langCode = 'ja-JP';
-    else if (language === 'Spanish') langCode = 'es-ES';
-    else if (language === 'Chinese') langCode = 'zh-CN';
-
+    const langCode = getLangCode(language);
     speak(data.result, langCode);
+
   };
 
   return (
@@ -132,23 +138,48 @@ export default function Home() {
       </fieldset>
 
       {/* Submit Button */}
-      <button
-        onClick={fetchFortune}
+      <div
         style={{
-          fontWeight: 'bold',
-          padding: '0.75rem 1.5rem',
-          fontSize: '1rem',
-          borderRadius: '0.5rem',
-          border: 'none',
-          backgroundColor: '#6a4c93',
-          color: 'white',
-          cursor: 'pointer',
-          display: 'block',
-          margin: '0 auto 2rem',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+          marginTop: '3rem',
+          marginBottom: '1rem',
         }}
       >
-        Reveal Fortune
-      </button>
+        <button
+          onClick={fetchFortune}
+          style={{
+            fontWeight: 'bold',
+            padding: '0.75rem 1.5rem',
+            fontSize: '1rem',
+            borderRadius: '0.5rem',
+            border: 'none',
+            backgroundColor: '#6a4c93', // Purple
+            color: 'white',
+            cursor: 'pointer',
+          }}
+        >
+          Reveal Fortune
+        </button>
+
+        <button
+          onClick={() => speak(result, getLangCode(language))}
+          style={{
+            fontWeight: 'bold',
+            padding: '0.75rem 1.5rem',
+            fontSize: '1rem',
+            borderRadius: '0.5rem',
+            border: '2px solid #3498db',
+            backgroundColor: '#3498db',
+            color: 'white',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease, transform 0.1s ease',
+          }}
+        >
+          🔊 Speak again
+        </button>
+      </div>
 
       {/* Result Display */}
       <div
