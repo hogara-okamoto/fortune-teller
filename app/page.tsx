@@ -1,10 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const bloodTypes = ['A', 'B', 'O', 'AB'];
 const birthMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 const languages = ['English', 'Spanish', 'Japanese', 'Chinese'];
+
+function speak(text, langCode = 'en-US') {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = langCode;
+
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find((v) => v.lang.startsWith(langCode));
+    if (voice) utterance.voice = voice;
+
+    speechSynthesis.speak(utterance);
+  }
+}
 
 export default function Home() {
   const [input1, setInput1] = useState('A');
@@ -26,6 +39,13 @@ export default function Home() {
     const data = await res.json();
     setResult(data.result);
     setLoading(false);
+
+    let langCode = 'en-US';
+    if (language === 'Japanese') langCode = 'ja-JP';
+    else if (language === 'Spanish') langCode = 'es-ES';
+    else if (language === 'Chinese') langCode = 'zh-CN';
+
+    speak(data.result, langCode);
   };
 
   return (
