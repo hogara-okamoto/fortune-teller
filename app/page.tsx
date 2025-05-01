@@ -19,7 +19,7 @@ function speak(text: string, langCode = 'en-US') {
   }
 }
 
-function getLangCode(language) {
+function getLangCode(language: string) {
   switch (language) {
     case 'Japanese': return 'ja-JP';
     case 'Spanish': return 'es-ES';
