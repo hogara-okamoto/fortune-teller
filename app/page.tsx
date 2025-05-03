@@ -15,19 +15,6 @@ function getLangCode(language: string) {
   }
 }
 
-function speak(text: string, langCode = 'en-US') {
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = langCode;
-
-    const voices = speechSynthesis.getVoices();
-    const voice = voices.find((v) => v.lang.startsWith(langCode));
-    if (voice) utterance.voice = voice;
-
-    speechSynthesis.speak(utterance);
-  }
-}
-
 export default function Home() {
   const [input1, setInput1] = useState('A');
   const [input2, setInput2] = useState('1');
@@ -46,12 +33,11 @@ export default function Home() {
       }),
     });
     const data = await res.json();
-    setResult(data.result);
+    const audio = new Audio(`data:audio/mp3;base64,${data.audioBase64}`);
+    audio.play();
+    console.log(data);
+    setResult(data.text);
     setLoading(false);
-
-    const langCode = getLangCode(language);
-    speak(data.result, langCode);
-
   };
 
   return (

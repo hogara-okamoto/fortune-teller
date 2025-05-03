@@ -40,10 +40,27 @@ export async function POST(req) {
 
 Make it poetic and inspiring in ${language}.`;
 
-  const completion = await openai.chat.completions.create({
+  // Step 1: Get chat completion
+  const chat = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     messages: [{ role: 'user', content: prompt }],
   });
 
-  return NextResponse.json({ result: completion.choices[0].message.content });
+  const text = chat.choices[0].message.content;
+
+  // Step 2: Convert to speech (TTS)
+  const speechResponse = await openai.audio.speech.create({
+    model: 'tts-1',
+    voice: 'nova',
+    input: text,
+  });
+
+  const buffer = Buffer.from(await speechResponse.arrayBuffer());
+  const audioBase64 = buffer.toString('base64');
+
+  // Return both text and audio as base64
+  return NextResponse.json({
+    text,
+    audioBase64, // Can be used as: `data:audio/mp3;base64,${audioBase64}`
+  });
 }
