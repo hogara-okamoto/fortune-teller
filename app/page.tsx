@@ -6,15 +6,6 @@ const bloodTypes = ['A', 'B', 'O', 'AB'];
 const birthMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 const languages = ['English', 'Spanish', 'Japanese', 'Chinese'];
 
-function getLangCode(language: string) {
-  switch (language) {
-    case 'Japanese': return 'ja-JP';
-    case 'Spanish': return 'es-ES';
-    case 'Chinese': return 'zh-CN';
-    default: return 'en-US';
-  }
-}
-
 export default function Home() {
   const [input1, setInput1] = useState('A');
   const [input2, setInput2] = useState('1');
