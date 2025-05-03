@@ -6,6 +6,15 @@ const bloodTypes = ['A', 'B', 'O', 'AB'];
 const birthMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 const languages = ['English', 'Spanish', 'Japanese', 'Chinese'];
 
+function getLangCode(language: string) {
+  switch (language) {
+    case 'Japanese': return 'ja-JP';
+    case 'Spanish': return 'es-ES';
+    case 'Chinese': return 'zh-CN';
+    default: return 'en-US';
+  }
+}
+
 function speak(text: string, langCode = 'en-US') {
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -16,15 +25,6 @@ function speak(text: string, langCode = 'en-US') {
     if (voice) utterance.voice = voice;
 
     speechSynthesis.speak(utterance);
-  }
-}
-
-function getLangCode(language: string) {
-  switch (language) {
-    case 'Japanese': return 'ja-JP';
-    case 'Spanish': return 'es-ES';
-    case 'Chinese': return 'zh-CN';
-    default: return 'en-US';
   }
 }
 
