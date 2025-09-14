@@ -12,7 +12,6 @@ export default function Home() {
   const [language, setLanguage] = useState('English');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
-  const [audioReady, setAudioReady] = useState(false);
   const [pendingAudio, setPendingAudio] = useState<HTMLAudioElement | null>(null);
 
   const fetchFortune = async () => {
@@ -39,12 +38,10 @@ export default function Home() {
       try {
         await audio.play();
         console.log('Audio playing successfully');
-        setAudioReady(true);
       } catch (error) {
         console.error('Audio play failed:', error);
         // Store the audio for later playback when user interacts
         setPendingAudio(audio);
-        setAudioReady(false);
       }
     };
     
@@ -62,7 +59,6 @@ export default function Home() {
         await pendingAudio.play();
         console.log('Pending audio playing successfully');
         setPendingAudio(null);
-        setAudioReady(true);
       } catch (error) {
         console.error('Pending audio play failed:', error);
       }
