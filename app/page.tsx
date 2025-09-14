@@ -38,10 +38,12 @@ export default function Home() {
       try {
         await audio.play();
         console.log('Audio playing successfully');
+        setLoading(false);
       } catch (error) {
         console.error('Audio play failed:', error);
         // Store the audio for later playback when user interacts
         setPendingAudio(audio);
+        // Keep loading true to show "Play Audio ↓" message
       }
     };
     
@@ -50,7 +52,6 @@ export default function Home() {
     
     console.log(data);
     setResult(data.text);
-    setLoading(false);
   };
 
   const playPendingAudio = async () => {
@@ -59,6 +60,7 @@ export default function Home() {
         await pendingAudio.play();
         console.log('Pending audio playing successfully');
         setPendingAudio(null);
+        setLoading(false);
       } catch (error) {
         console.error('Pending audio play failed:', error);
       }
