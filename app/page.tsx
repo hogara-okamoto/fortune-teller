@@ -12,6 +12,8 @@ export default function Home() {
   const [language, setLanguage] = useState('English');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
+  const [pendingAudio, setPendingAudio] = useState<HTMLAudioElement | null>(null);
 
   const fetchFortune = async () => {
     setLoading(true);
@@ -32,22 +34,17 @@ export default function Home() {
     audio.preload = 'auto';
     audio.volume = 1.0;
     
-    // Play audio with error handling for iPhone
+    // Try to play audio immediately
     const playAudio = async () => {
       try {
         await audio.play();
         console.log('Audio playing successfully');
+        setAudioReady(true);
       } catch (error) {
         console.error('Audio play failed:', error);
-        // Try again with a slight delay for iPhone
-        setTimeout(async () => {
-          try {
-            await audio.play();
-            console.log('Audio playing on retry');
-          } catch (retryError) {
-            console.error('Audio retry failed:', retryError);
-          }
-        }, 100);
+        // Store the audio for later playback when user interacts
+        setPendingAudio(audio);
+        setAudioReady(false);
       }
     };
     
@@ -57,6 +54,19 @@ export default function Home() {
     console.log(data);
     setResult(data.text);
     setLoading(false);
+  };
+
+  const playPendingAudio = async () => {
+    if (pendingAudio) {
+      try {
+        await pendingAudio.play();
+        console.log('Pending audio playing successfully');
+        setPendingAudio(null);
+        setAudioReady(true);
+      } catch (error) {
+        console.error('Pending audio play failed:', error);
+      }
+    }
   };
 
   return (
@@ -180,8 +190,30 @@ export default function Home() {
           wordWrap: 'break-word',
         }}
       >
-        {loading && <p>Loading...Wait for a while</p>}
+        {loading && <p>Loading...</p>}
         {result && <p style={{ marginTop: '1rem' }}>{result}</p>}
+        {pendingAudio && (
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <p style={{ color: '#6a4c93', marginBottom: '0.5rem' }}>
+              🔊 Audio ready! Tap to play:
+            </p>
+            <button
+              onClick={playPendingAudio}
+              style={{
+                fontWeight: 'bold',
+                padding: '0.5rem 1rem',
+                fontSize: '0.9rem',
+                borderRadius: '0.5rem',
+                border: 'none',
+                backgroundColor: '#6a4c93',
+                color: 'white',
+                cursor: 'pointer',
+              }}
+            >
+              ▶️ Play Audio
+            </button>
+          </div>
+        )}
       </div>
     </main>
   );
