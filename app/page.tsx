@@ -24,8 +24,36 @@ export default function Home() {
       }),
     });
     const data = await res.json();
+    
+    // Create audio element and set up for iPhone compatibility
     const audio = new Audio(`data:audio/mp3;base64,${data.audioBase64}`);
-    audio.play();
+    
+    // Set audio properties for better iPhone compatibility
+    audio.preload = 'auto';
+    audio.volume = 1.0;
+    
+    // Play audio with error handling for iPhone
+    const playAudio = async () => {
+      try {
+        await audio.play();
+        console.log('Audio playing successfully');
+      } catch (error) {
+        console.error('Audio play failed:', error);
+        // Try again with a slight delay for iPhone
+        setTimeout(async () => {
+          try {
+            await audio.play();
+            console.log('Audio playing on retry');
+          } catch (retryError) {
+            console.error('Audio retry failed:', retryError);
+          }
+        }, 100);
+      }
+    };
+    
+    // Play immediately
+    playAudio();
+    
     console.log(data);
     setResult(data.text);
     setLoading(false);
@@ -152,7 +180,7 @@ export default function Home() {
           wordWrap: 'break-word',
         }}
       >
-        {loading && <p>Loading...</p>}
+        {loading && <p>Loading...Wait for a while</p>}
         {result && <p style={{ marginTop: '1rem' }}>{result}</p>}
       </div>
     </main>
