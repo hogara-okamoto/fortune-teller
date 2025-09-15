@@ -189,11 +189,11 @@ export default function Home() {
         }}
       >
         {loading && !pendingAudio && <p>Loading...</p>}
-        {loading && pendingAudio && <p style={{ color: '#6a4c93', fontWeight: 'bold' }}>🔊 Play Audio ⬇️</p>}
+        {loading && pendingAudio && <p style={{ color: '#6a4c93', fontWeight: 'bold' }}><a href="#tell">🔊 Play Audio ⬇️</a></p>}
         {result && <p style={{ marginTop: '1rem' }}>{result}</p>}
         {pendingAudio && (
           <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <p style={{ color: '#6a4c93', marginBottom: '0.5rem' }}>
+            <p style={{ color: '#6a4c93', marginBottom: '0.5rem' }} id="tell">
               🔊 Audio ready! Tap to play:
             </p>
             <button
